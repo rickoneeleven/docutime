@@ -1,0 +1,28 @@
+.container {
+    margin-top: 50px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Align to the start of the row */
+    gap: 20px; /* Adjust the gap as necessary */
+}
+
+.documentary {
+    flex: 1 1 calc(33.33% - 20px); /* Flex-grow, flex-shrink, and basis */
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column; /* Stack the children of .documentary */
+}
+
+.documentary img {
+    max-width: 100%;
+    height: auto;
+}
+
+.watched-btn {
+    cursor: pointer;
+    margin-top: auto; /* Push the button to the bottom */
+    width: 100%; /* Optional: Makes the button extend full width */
+}
