@@ -1,7 +1,10 @@
+let localDocumentariesState = {}; // Initial empty state
+
 async function fetchDocumentaries() {
     try {
         const response = await fetch('json_documentaries.json');
         const data = await response.json();
+        localDocumentariesState = data; // Update local state with fetched data
         return data;
     } catch (error) {
         console.error("Error fetching documentaries:", error);
@@ -9,12 +12,11 @@ async function fetchDocumentaries() {
     }
 }
 
-async function displayDocumentaries() {
-    const documentaries = await fetchDocumentaries();
+function displayDocumentaries() {
     const container = document.getElementById('documentaries');
     container.innerHTML = ''; // Clear the container
 
-    Object.values(documentaries).forEach(doc => {
+    Object.values(localDocumentariesState).forEach(doc => {
         if (doc.watched === 0) {
             const docElement = document.createElement('div');
             docElement.classList.add('four', 'columns', 'documentary');
@@ -32,31 +34,30 @@ async function displayDocumentaries() {
     });
 }
 
-
 async function markAsWatched(title) {
-    const url = 'update_documentary_status.php'; // Confirm this is the correct URL
-    console.log('URL:', url); // Output the URL being used for the fetch call
-    console.log('Title:', title); // Output the title to ensure it's correct
+    const url = 'update_documentary_status.php'; 
 
     try {
-        const response = await fetch(url, { // Make sure 'url' is a valid string, not null or undefined
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: `title=${encodeURIComponent(title)}`,
         });
-        console.log('Fetch request sent to:', response.url); // Output the URL the request was sent to
         const data = await response.json();
-        console.log('Response received:', data); // Output the data received from the server
         if (data.success) {
-            displayDocumentaries(); // Refresh the display if update was successful
+            // Update local state to reflect watched status
+            const docToUpdate = Object.values(localDocumentariesState).find(doc => doc.title === title);
+            if (docToUpdate) {
+                docToUpdate.watched = 1; // Mark as watched in local state
+            }
+            displayDocumentaries(); // Refresh the display using updated local state
         }
     } catch (error) {
         console.error("Error marking documentary as watched:", error);
-        console.log('Fetch request failed for:', url); // Output the URL that failed
     }
 }
 
 // Initial display
-displayDocumentaries();
+fetchDocumentaries().then(displayDocumentaries); // Ensure local state is populated before display
