@@ -16,13 +16,16 @@ function displayDocumentaries() {
     const container = document.getElementById('documentaries');
     container.innerHTML = ''; // Clear the container
 
-    Object.values(localDocumentariesState).forEach(doc => {
+    // Sort documentaries by vote_count in descending order
+    const sortedDocumentaries = Object.values(localDocumentariesState).sort((a, b) => b.vote_count - a.vote_count);
+
+    sortedDocumentaries.forEach(doc => {
         if (doc.watched === 0) {
             const docElement = document.createElement('div');
             docElement.classList.add('four', 'columns', 'documentary');
             docElement.innerHTML = `
                 <a href="${doc.imdb_link}" target="_blank">
-                    <img src="${doc.poster_path}" alt="${doc.title}">
+                    <img src="${doc.poster_path}" alt="${doc.title}" title="${doc.title}">
                 </a>
                 <h5>${doc.title}</h5>
                 <p>${doc.overview}</p>
