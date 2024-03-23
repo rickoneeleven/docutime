@@ -16,20 +16,22 @@ function displayDocumentaries() {
     const container = document.getElementById('documentaries');
     container.innerHTML = ''; // Clear the container
 
-    // Sort documentaries by vote_count in descending order
     const sortedDocumentaries = Object.values(localDocumentariesState).sort((a, b) => b.vote_count - a.vote_count);
 
     sortedDocumentaries.forEach(doc => {
         if (doc.watched === 0) {
             const docElement = document.createElement('div');
             docElement.classList.add('four', 'columns', 'documentary');
+
+            // Extract the year from the release_date
+            const year = new Date(doc.release_date).getFullYear();
+
             docElement.innerHTML = `
                 <a href="${doc.imdb_link}" target="_blank">
-                    <img src="${doc.poster_path}" alt="${doc.title}" title="${doc.title}">
+                    <img src="${doc.poster_path}" alt="${doc.title}" title="${doc.title} - ${year}">
                 </a>
-                <h5>${doc.title}</h5>
+                <h5>${doc.title} - ${year}</h5>
                 <p>${doc.overview}</p>
-                <p>Release date: ${doc.release_date}</p>
                 <button class="button button-primary watched-btn" onclick="markAsWatched('${doc.title}')">Mark as Watched</button>
             `;
             container.appendChild(docElement);
