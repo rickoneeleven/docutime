@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime, timedelta
 
-api_key = 'ace52aaa504f959c46c6888da82f56b5'
+api_key = os.getenv('TMDB_API_KEY')
 
     # Movie ID for "The Bloody Hundredth"
 movie_id = '84334'
