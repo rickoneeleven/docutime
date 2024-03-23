@@ -19,17 +19,19 @@ async function displayDocumentaries() {
             const docElement = document.createElement('div');
             docElement.classList.add('four', 'columns', 'documentary');
             docElement.innerHTML = `
-                <img src="${doc.poster_path}" alt="${doc.title}">
+                <a href="${doc.imdb_link}" target="_blank">
+                    <img src="${doc.poster_path}" alt="${doc.title}">
+                </a>
                 <h5>${doc.title}</h5>
                 <p>${doc.overview}</p>
                 <p>Release date: ${doc.release_date}</p>
-                <a href="${doc.imdb_link}" target="_blank" class="button button-primary">IMDB</a>
                 <button class="button button-primary watched-btn" onclick="markAsWatched('${doc.title}')">Mark as Watched</button>
             `;
             container.appendChild(docElement);
         }
     });
 }
+
 
 async function markAsWatched(title) {
     const url = 'update_documentary_status.php'; // Confirm this is the correct URL
