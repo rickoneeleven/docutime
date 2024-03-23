@@ -26,11 +26,14 @@ function displayDocumentaries() {
             // Extract the year from the release_date
             const year = new Date(doc.release_date).getFullYear();
 
+            // Round the vote_average to the nearest full number and append /10
+            const voteAverageRounded = Math.round(doc.vote_average);
+
             docElement.innerHTML = `
                 <a href="${doc.imdb_link}" target="_blank">
-                    <img src="${doc.poster_path}" alt="${doc.title}" title="${doc.title} - ${year}">
+                    <img src="${doc.poster_path}" alt="${doc.title}" title="${doc.title} (${voteAverageRounded}/10) - ${year}">
                 </a>
-                <h5>${doc.title} - ${year}</h5>
+                <h5>${doc.title} (${voteAverageRounded}/10) - ${year}</h5>
                 <p>${doc.overview}</p>
                 <button class="button button-primary watched-btn" onclick="markAsWatched('${doc.title}')">Mark as Watched</button>
             `;
