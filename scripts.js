@@ -35,14 +35,15 @@ function displayDocumentaries() {
                 </a>
                 <h5>${doc.title} (${voteAverageRounded}/10) - ${year}</h5>
                 <p>${doc.overview}</p>
-                <button class="button button-primary watched-btn" onclick="markAsWatched('${doc.title}')">Mark as Watched</button>
+                <button class="button button-primary watched-btn" onclick="markAsWatched('${Object.keys(localDocumentariesState).find(key => localDocumentariesState[key].title === doc.title)}')">Mark as Watched</button>
             `;
             container.appendChild(docElement);
         }
     });
 }
 
-async function markAsWatched(title) {
+
+async function markAsWatched(id) {
     const url = 'update_documentary_status.php'; 
 
     try {
@@ -51,14 +52,13 @@ async function markAsWatched(title) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `title=${encodeURIComponent(title)}`,
+            body: `id=${encodeURIComponent(id)}`,
         });
         const data = await response.json();
         if (data.success) {
             // Update local state to reflect watched status
-            const docToUpdate = Object.values(localDocumentariesState).find(doc => doc.title === title);
-            if (docToUpdate) {
-                docToUpdate.watched = 1; // Mark as watched in local state
+            if (localDocumentariesState[id]) {
+                localDocumentariesState[id].watched = 1; // Mark as watched in local state
             }
             displayDocumentaries(); // Refresh the display using updated local state
         }
