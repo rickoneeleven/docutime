@@ -30,8 +30,8 @@ function displayDocumentaries() {
             const voteAverageRounded = Math.round(doc.vote_average);
 
             docElement.innerHTML = `
-                <a href="${doc.imdb_link}" target="_blank">
-                    <img src="${doc.poster_path}" alt="${doc.title}" title="${doc.title} (${voteAverageRounded}/10) - ${year}">
+            <a href="https://www.google.com/search?q=${encodeURIComponent(doc.title)}+trailer" target="_blank">
+    <img src="${doc.poster_path}" alt="${doc.title}" title="${doc.title} (${voteAverageRounded}/10) - ${year}">      
                 </a>
                 <h5>${doc.title} (${voteAverageRounded}/10) - ${year}</h5>
                 <p>${doc.overview}</p>
