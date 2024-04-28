@@ -35,6 +35,7 @@ function displayDocumentaries() {
                 </a>
                 <h5>${doc.title} (${voteAverageRounded}/10) - ${year}</h5>
                 <p>${doc.overview}</p>
+                <p>last updated: ${doc.last_updated}</p>
                 <button class="button button-primary watched-btn" onclick="markAsWatched('${Object.keys(localDocumentariesState).find(key => localDocumentariesState[key].title === doc.title)}')">Mark as Watched</button>
             `;
             container.appendChild(docElement);
