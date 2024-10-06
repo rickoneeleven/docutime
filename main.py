@@ -51,6 +51,10 @@ while True:
             if movie_id not in movies_data or (movie_id in movies_data and movies_data[movie_id].get('watched', 0) == 0):
                 detailed_response = requests.get(url_movie_details.format(id=movie['id']), params={'api_key': api_key})
                 detailed_data = detailed_response.json()
+                
+                # Check if this is a new movie
+                is_new_movie = movie_id not in movies_data
+                
                 movies_data[movie_id] = {
                     'title': movie['title'],
                     'poster_path': f"https://image.tmdb.org/t/p/w500/{movie['poster_path']}" if movie['poster_path'] else None,
@@ -63,7 +67,12 @@ while True:
                     'last_updated': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'watched': movies_data[movie_id]['watched'] if movie_id in movies_data else 0,
                 }
-                print(f"Updated movie: {movie['title']} (ID: {movie_id})")
+                
+                # Add first_discovered field only for new movies
+                if is_new_movie:
+                    movies_data[movie_id]['first_discovered'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                
+                print(f"{'Added' if is_new_movie else 'Updated'} movie: {movie['title']} (ID: {movie_id})")
             else:
                 print(f"Skipped updating details for watched movie: {movie['title']} (ID: {movie_id})")
                 movies_data[movie_id]['last_updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
