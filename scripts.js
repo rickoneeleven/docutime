@@ -44,6 +44,14 @@ function displayDocumentaries() {
 
             const docId = Object.keys(localDocumentariesState).find(key => localDocumentariesState[key].title === doc.title);
 
+            // Create the previously hidden message if applicable
+            let previouslyHiddenMessage = '';
+            if (doc.hide_until && isDocumentaryVisible(doc)) {
+                previouslyHiddenMessage = `
+                    <p style="color: red;">This documentary had previously been hidden until: ${doc.hide_until}</p>
+                `;
+            }
+
             docElement.innerHTML = `
                 <a href="https://www.google.com/search?q=${encodeURIComponent(doc.title)}+trailer" target="_blank">
                     <img src="${doc.poster_path}" alt="${doc.title}" title="${doc.title} (${voteAverageRounded}/10) - ${year}">      
@@ -53,6 +61,7 @@ function displayDocumentaries() {
                     <a href="#" onclick="hideDocumentary('${docId}'); return false;" class="hide-link">hide for 3 months</a>
                 </h5>
                 <p>${doc.overview}</p>
+                ${previouslyHiddenMessage}
                 <p>last updated: ${doc.last_updated}</p>
                 <button class="button button-primary watched-btn" onclick="markAsWatched('${docId}')">Mark as Watched</button>
             `;
