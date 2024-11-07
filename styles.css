@@ -26,3 +26,30 @@
     margin-top: auto; /* Push the button to the bottom */
     width: 100%; /* Optional: Makes the button extend full width */
 }
+
+/* New styles for the hide link */
+.hide-link {
+    font-size: 0.8em;
+    margin-left: 10px;
+    color: #666;
+    text-decoration: none;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+    transition: all 0.2s ease;
+}
+
+.hide-link:hover {
+    background-color: #e0e0e0;
+    color: #333;
+    text-decoration: none;
+}
+
+/* Make sure the title and hide link work well together */
+.documentary h5 {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
