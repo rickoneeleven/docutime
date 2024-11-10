@@ -38,7 +38,7 @@ def preserve_user_data(old_data, new_data):
     preserved_fields = {
         'watched': old_data.get('watched', 0),
         'hide_until': old_data.get('hide_until', None),
-        'first_discovered': old_data.get('first_discovered')
+        'first_discovered': old_data.get('first_discovered') or datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
     return {**new_data, **preserved_fields}
 
