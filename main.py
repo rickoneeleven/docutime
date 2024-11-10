@@ -31,6 +31,17 @@ params = {
     'page': 1,
 }
 
+def preserve_user_data(old_data, new_data):
+    """
+    Preserve user-specific fields when updating movie data
+    """
+    preserved_fields = {
+        'watched': old_data.get('watched', 0),
+        'hide_until': old_data.get('hide_until', None),
+        'first_discovered': old_data.get('first_discovered')
+    }
+    return {**new_data, **preserved_fields}
+
 json_file_path = 'json_documentaries.json'
 if os.path.exists(json_file_path):
     print(f"JSON file path: {os.path.abspath(json_file_path)}")
@@ -48,34 +59,37 @@ while True:
         print(f"Processing page {params['page']} out of {data['total_pages']}.")
         for movie in data['results']:
             movie_id = str(movie['id'])  # Use string for JSON keys
-            if movie_id not in movies_data or (movie_id in movies_data and movies_data[movie_id].get('watched', 0) == 0):
-                detailed_response = requests.get(url_movie_details.format(id=movie['id']), params={'api_key': api_key})
-                detailed_data = detailed_response.json()
-                
-                # Check if this is a new movie
-                is_new_movie = movie_id not in movies_data
-                
-                movies_data[movie_id] = {
-                    'title': movie['title'],
-                    'poster_path': f"https://image.tmdb.org/t/p/w500/{movie['poster_path']}" if movie['poster_path'] else None,
-                    'homepage': detailed_data.get('homepage'),
-                    'imdb_link': f"https://www.imdb.com/title/{detailed_data.get('imdb_id')}/" if detailed_data.get('imdb_id') else None,
-                    'overview': movie['overview'],
-                    'release_date': movie['release_date'],
-                    'vote_average': movie['vote_average'],
-                    'vote_count': movie['vote_count'],
-                    'last_updated': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                    'watched': movies_data[movie_id]['watched'] if movie_id in movies_data else 0,
-                }
-                
-                # Add first_discovered field only for new movies
-                if is_new_movie:
-                    movies_data[movie_id]['first_discovered'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                
-                print(f"{'Added' if is_new_movie else 'Updated'} movie: {movie['title']} (ID: {movie_id})")
+            
+            # Get detailed movie data
+            detailed_response = requests.get(url_movie_details.format(id=movie['id']), params={'api_key': api_key})
+            detailed_data = detailed_response.json()
+            
+            # Prepare new movie data
+            new_movie_data = {
+                'title': movie['title'],
+                'poster_path': f"https://image.tmdb.org/t/p/w500/{movie['poster_path']}" if movie['poster_path'] else None,
+                'homepage': detailed_data.get('homepage'),
+                'imdb_link': f"https://www.imdb.com/title/{detailed_data.get('imdb_id')}/" if detailed_data.get('imdb_id') else None,
+                'overview': movie['overview'],
+                'release_date': movie['release_date'],
+                'vote_average': movie['vote_average'],
+                'vote_count': movie['vote_count'],
+                'last_updated': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            }
+
+            # For existing movies, preserve user data
+            if movie_id in movies_data:
+                new_movie_data = preserve_user_data(movies_data[movie_id], new_movie_data)
+                print(f"Updated movie: {movie['title']} (ID: {movie_id}), preserved user preferences")
             else:
-                print(f"Skipped updating details for watched movie: {movie['title']} (ID: {movie_id})")
-                movies_data[movie_id]['last_updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                # For new movies, add first_discovered timestamp
+                new_movie_data['first_discovered'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                new_movie_data['watched'] = 0
+                print(f"Added new movie: {movie['title']} (ID: {movie_id})")
+            
+            # Update the movies_data dictionary
+            movies_data[movie_id] = new_movie_data
+
     else:
         print(f"Failed to fetch data: HTTP {response.status_code}")
 
