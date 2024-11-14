@@ -59,6 +59,7 @@ function displayDocumentaries() {
                 <h5>
                     ${doc.title} (${voteAverageRounded}/10) - ${year}
                     <a href="#" onclick="hideDocumentary('${docId}'); return false;" class="hide-link">hide for 3 months</a>
+                    <a href="https://thepiratebay.org/search.php?q=${encodeURIComponent(doc.title)}&cat=0" target="_blank" class="hide-link">search</a>
                 </h5>
                 <p>${doc.overview}</p>
                 ${previouslyHiddenMessage}
