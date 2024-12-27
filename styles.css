@@ -5,15 +5,15 @@
 .row {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Align to the start of the row */
-    gap: 20px; /* Adjust the gap as necessary */
+    justify-content: flex-start;
+    gap: 20px;
 }
 
 .documentary {
-    flex: 1 1 calc(33.33% - 20px); /* Flex-grow, flex-shrink, and basis */
+    flex: 1 1 calc(33.33% - 20px);
     margin-bottom: 30px;
     display: flex;
-    flex-direction: column; /* Stack the children of .documentary */
+    flex-direction: column;
 }
 
 .documentary img {
@@ -23,11 +23,10 @@
 
 .watched-btn {
     cursor: pointer;
-    margin-top: auto; /* Push the button to the bottom */
-    width: 100%; /* Optional: Makes the button extend full width */
+    margin-top: auto;
+    width: 100%;
 }
 
-/* New styles for the hide link */
 .hide-link {
     font-size: 0.8em;
     margin-left: 10px;
@@ -45,11 +44,25 @@
     text-decoration: none;
 }
 
-/* Make sure the title and hide link work well together */
 .documentary h5 {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 10px;
+}
+
+.cron-log {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.cron-log pre {
+    margin: 0;
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.5;
 }

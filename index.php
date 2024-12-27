@@ -1,5 +1,4 @@
 <?php
-// Add cache control headers
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
@@ -18,6 +17,7 @@ header("Pragma: no-cache");
 <body>
     <div class="container">
         <div id="documentaries" class="row"></div>
+        <div id="cronLog" class="cron-log" style="display: none;"></div>
     </div>
 
     <script src="scripts.js?v=<?php echo time(); ?>"></script>
