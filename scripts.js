@@ -36,9 +36,9 @@ async function displayDocumentaries() {
     const cronLogDiv = document.getElementById('cronLog');
     container.innerHTML = '';
 
-    const visibleDocs = Object.values(localDocumentariesState)
-        .filter(doc => doc.watched === 0 && isDocumentaryVisible(doc))
-        .sort((a, b) => b.vote_count - a.vote_count);
+    const visibleDocs = Object.entries(localDocumentariesState)
+        .filter(([, doc]) => doc.watched === 0 && isDocumentaryVisible(doc))
+        .sort(([, a], [, b]) => b.vote_count - a.vote_count);
 
     if (visibleDocs.length === 0) {
         container.style.display = 'none';
@@ -51,12 +51,11 @@ async function displayDocumentaries() {
     container.style.display = 'flex';
     cronLogDiv.style.display = 'none';
 
-    visibleDocs.forEach(doc => {
+    visibleDocs.forEach(([docId, doc]) => {
         const docElement = document.createElement('div');
         docElement.classList.add('four', 'columns', 'documentary');
         const year = new Date(doc.release_date).getFullYear();
         const voteAverageRounded = Math.round(doc.vote_average);
-        const docId = Object.keys(localDocumentariesState).find(key => localDocumentariesState[key].title === doc.title);
         const previouslyHiddenMessage = doc.hide_until && isDocumentaryVisible(doc) 
             ? `<p style="color: red;">This documentary had previously been hidden until: ${doc.hide_until}</p>` 
             : '';

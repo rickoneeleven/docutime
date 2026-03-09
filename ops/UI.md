@@ -29,3 +29,4 @@ curl -I http://127.0.0.1:8000/
 ## Notes
 - `scripts.js` sorts visible cards by `vote_count` descending.
 - When no cards qualify, the browser fetches and renders `cron.log` directly.
+- Card actions use the JSON entry key carried through render, so duplicate titles do not post the wrong id.
