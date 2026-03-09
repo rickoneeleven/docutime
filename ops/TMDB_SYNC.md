@@ -20,13 +20,14 @@ Python refresh job pulls documentary metadata from TMDB and merges it into the l
 ```bash
 python3 -m py_compile main.py scrap.py
 python3 main.py
+python3 scrap.py 84334
 tail -n 40 cron.log
 python3 -m json.tool json_documentaries.json > /dev/null
 ```
 
 ## Notes
 - `main.py` preserves `watched`, `hide_until`, and `first_discovered` for existing entries.
-- `main.py` reads `TMDB_API_KEY` from the environment; `scrap.py` does not.
+- `main.py` and `scrap.py` both read `TMDB_API_KEY` from the environment.
 
 ## Intentional Behavior
 - The refresh window is approximate last-12-months logic via `timedelta(days=12*30)`.

@@ -29,7 +29,7 @@ Open `http://127.0.0.1:8000/` after the server starts. Stop the PHP server with 
 - `json_documentaries.json` must be writable by both the PHP process and any cron user that runs `main.py`.
 - `cron.log` should be writable by the scheduled job if you rely on the fallback log view in the browser.
 - `main.py` preserves `watched`, `hide_until`, and `first_discovered` when it refreshes an existing documentary entry.
-- `scrap.py` is an ad hoc TMDB inspection script with a hard-coded API key and fixed movie id. Do not use it for scheduled refreshes.
+- `scrap.py` is an ad hoc TMDB inspection script that requires `TMDB_API_KEY` and a movie id argument. Do not use it for scheduled refreshes.
 
 ## Common Operations
 ```bash
